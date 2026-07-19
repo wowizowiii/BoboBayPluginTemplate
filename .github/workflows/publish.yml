@@ -1,0 +1,28 @@
+# This workflow will publish the .NET template on release publish
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+# See also: https://docs.github.com/en/actions/tutorials/build-and-test-code/net#publishing-to-package-registries
+
+name: Publish GitHub Package
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+          source-url: https://nuget.pkg.github.com/wowizowiii/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Create the package
+        run: dotnet pack -c Release BoboBayPluginTemplate
+      - name: Publish the package to GPR
+        run: dotnet nuget push BoboBayPluginTemplate/bin/Release/*.nupkg
