@@ -48,6 +48,7 @@ Create the project and you're done!
 The template takes care of all references for you, so you can focus on what really matters, rather than mess with project configuration.
 
 When ready to publish, don't forget to [add a license](https://choosealicense.com/)! This is very important in the open source community.  
+Additionally, a `.gitignore` file has been included for you to use. Simply move it to the root directory of your project.
 
 ## Community
 
