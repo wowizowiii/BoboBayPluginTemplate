@@ -1,0 +1,107 @@
+<!--
+    Bobo Bay Plugin Project
+
+    This template comes pre-configured with sensible defaults,
+    allowing modders to jump right into development for most tasks.
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+    
+    <!-- Plugin Properties -->
+    <PropertyGroup>
+        <SteamWorkshopID>0</SteamWorkshopID>
+        <BepInExPluginName>ExamplePlugin</BepInExPluginName>
+        <BepInExPluginGuid>com.example.plugin.exampleplugin</BepInExPluginGuid>
+        <Version>0.1.0</Version>
+    </PropertyGroup>
+
+    <!-- Assembly Properties -->
+    <PropertyGroup>
+        <!-- Main Properties -->
+        <AssemblyName>$(BepInExPluginName)</AssemblyName>
+        <RootNamespace>$(BepInExPluginName)</RootNamespace>
+        <!-- Know what you're doing and need more customization? Here you go! -->
+        <LangVersion>12</LangVersion>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <RestoreAdditionalProjectSources>
+            https://api.nuget.org/v3/index.json;
+            https://nuget.bepinex.dev/v3/index.json
+        </RestoreAdditionalProjectSources>
+    </PropertyGroup>
+
+    <!-- Automatic Install Detection -->
+    <PropertyGroup>
+        <!-- If no custom install location has been set, fallback to default Steam install location -->
+        <BoboBay_Install_Location Condition="!Exists('$(BoboBay_Install_Location)') AND $([MSBuild]::IsOSPlatform('Windows'))">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 1889810', 'InstallLocation', null, RegistryView.Registry64, RegistryView.Registry32))</BoboBay_Install_Location>
+        <BoboBay_Install_Location Condition="!Exists('$(BoboBay_Install_Location)') AND $([MSBuild]::IsOSPlatform('Windows'))">C:\Program Files (x86)\Steam\steamapps\common\Bobo Bay</BoboBay_Install_Location>
+        <BoboBay_Install_Location Condition="!Exists('$(BoboBay_Install_Location)') AND $([MSBuild]::IsOSPlatform('Linux'))">$(HOME)/.steam/steam/steamapps/common/Bobo Bay</BoboBay_Install_Location>
+        <!-- Shortcut for Game Assemblies -->
+        <_ManagedAssemblies>$(BoboBay_Install_Location)\Bobo Bay_Data\Managed</_ManagedAssemblies>
+    </PropertyGroup>
+
+    <!-- NuGet Packages -->
+    <ItemGroup>
+        <PackageReference Include="BepInEx.Analyzers" Version="1.0.8" IncludeAssets="analyzers"/>
+        <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3"/>
+        <PackageReference Include="BepInEx.Core" Version="5.4.21"/>
+        <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*"/>
+        <PackageReference Include="Harmonize" Version="1.0.6" IncludeAssets="analyzers" Condition="$(VisualStudioVersion) >= 18.0"/>
+		<PackageReference Include="HarmonyX" Version="2.9.0"/>
+        <PackageReference Include="UnityEngine.Modules" Version="2021.3.45" IncludeAssets="compile"/>
+    </ItemGroup>
+
+    <!-- Game Assemblies -->
+    <ItemGroup>
+        <Reference Include="Assembly-CSharp" Private="false" Publicize="true">
+            <HintPath>$(_ManagedAssemblies)\Assembly-CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp-firstpass" Private="false" Publicize="true">
+            <HintPath>$(_ManagedAssemblies)\Assembly-CSharp-firstpass.dll</HintPath>
+        </Reference>
+        <Reference Include="BehaviorDesigner.Runtime" Private="false">
+            <HintPath>$(_ManagedAssemblies)\BehaviorDesigner.Runtime.dll</HintPath>
+        </Reference>
+        <Reference Include="com.rlabrecque.steamworks.net" Private="false">
+            <HintPath>$(_ManagedAssemblies)\com.rlabrecque.steamworks.net.dll</HintPath>
+        </Reference>
+        <Reference Include="Sirenix.Serialization" Private="false">
+            <HintPath>$(_ManagedAssemblies)\Sirenix.Serialization.dll</HintPath>
+        </Reference>
+        <Reference Include="Sonity.Public.Runtime" Private="false">
+            <HintPath>$(_ManagedAssemblies)\Sonity.Public.Runtime.dll</HintPath>
+        </Reference>
+        <Reference Include="Sonity.Runtime" Private="false">
+            <HintPath>$(_ManagedAssemblies)\Sonity.Runtime.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.InputSystem" Private="false">
+            <HintPath>$(_ManagedAssemblies)\Unity.InputSystem.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.TextMeshPro" Private="false">
+            <HintPath>$(_ManagedAssemblies)\Unity.TextMeshPro.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityAtoms.UnityAtomsBaseAtoms.Runtime" Private="false">
+            <HintPath>$(_ManagedAssemblies)\UnityAtoms.UnityAtomsBaseAtoms.Runtime.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityAtoms.UnityAtomsCore.Runtime" Private="false">
+            <HintPath>$(_ManagedAssemblies)\UnityAtoms.UnityAtomsCore.Runtime.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UI" Private="false">
+            <HintPath>$(_ManagedAssemblies)\UnityEngine.UI.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+    <!-- Project Assets & Resources -->
+    <ItemGroup>
+        <Content Include="Assets\**" Condition="Exists('Assets')" CopyToOutputDirectory="PreserveNewest"/>
+        <EmbeddedResource Include="Resources\**" Condition="Exists('Resources')"/>
+    </ItemGroup>
+
+    <!-- Install plugin on build -->
+    <PropertyGroup Condition="Exists('$(BoboBay_Install_Location)')">
+        <_PluginInstallPath>$(BoboBay_Install_Location)\BepInEx\plugins\$(SteamWorkshopID)</_PluginInstallPath>
+        <OutputPath Condition="$(SteamWorkshopID) != 0">$(_PluginInstallPath)\</OutputPath>
+        <OutputPath Condition="$(SteamWorkshopID) == 0">$(_PluginInstallPath)\$(AssemblyName)\</OutputPath>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    </PropertyGroup>
+    
+</Project>

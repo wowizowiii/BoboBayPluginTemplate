@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "identity": "AetharNet.Templates.BoboBay.Plugin",
+  "name": "Bobo Bay Plugin",
+  "shortName": "bobo-plugin",
+  "description": "Bobo Bay Plugin using BepInEx 5",
+  "author": "wowi",
+  "preferNameDirectory": true,
+  "classifications": [
+    "Bobo Bay",
+    "BepInEx 5",
+    "Plugin"
+  ],
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sourceName": "ExamplePlugin",
+  "symbols": {
+    "PluginID": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "com.example.plugin.exampleplugin",
+      "replaces": "com.example.plugin.exampleplugin",
+      "displayName": "Plugin ID"
+    }
+  }
+}
