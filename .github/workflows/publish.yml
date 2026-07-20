@@ -2,7 +2,7 @@
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 # See also: https://docs.github.com/en/actions/tutorials/build-and-test-code/net#publishing-to-package-registries
 
-name: Publish GitHub Package
+name: Publish NuGet Package
 
 on:
   release:
@@ -19,10 +19,10 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
-          source-url: https://nuget.pkg.github.com/wowizowiii/index.json
+          source-url: https://nuget.aethar.net/v3/index.json
         env:
-          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NUGET_AUTH_TOKEN: ${{secrets.NUGET_AUTH_TOKEN}}
       - name: Create the package
         run: dotnet pack -c Release BoboBayPluginTemplate
-      - name: Publish the package to GPR
+      - name: Publish the package to AetharNet NuGet Feed
         run: dotnet nuget push BoboBayPluginTemplate/bin/Release/*.nupkg
