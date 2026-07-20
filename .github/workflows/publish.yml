@@ -19,12 +19,9 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
-          source-url: https://nuget.aethar.net/v3/index.json
-        env:
-          NUGET_AUTH_TOKEN: ${{secrets.NUGET_AUTH_TOKEN}}
       - name: Restore project
         run: dotnet restore
       - name: Create the package
         run: dotnet pack --no-build --configuration Release BoboBayPluginTemplate
       - name: Publish the package to AetharNet NuGet Feed
-        run: dotnet nuget push BoboBayPluginTemplate/bin/Release/*.nupkg
+        run: dotnet nuget push -s "https://nuget.aethar.net/v3/index.json" -k "${{secrets.NUGET_AUTH_TOKEN}}" BoboBayPluginTemplate/bin/Release/*.nupkg
