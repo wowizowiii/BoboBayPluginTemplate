@@ -7,10 +7,12 @@ Modding template for [Bobo Bay](https://store.steampowered.com/app/1889810/Bobo_
 This template is designed to work out-of-the-box: that means you can click `Build` and the project will just work.
 
 - Automatically detects your game installation
-- Includes several common references
 - Installs your plugin on build
 - Assets in `Assets` folder get copied to mod folder
 - Assets in `Resources` folder get embedded in assembly
+- Includes assembly publicizer for easier access to private fields
+- Includes code analyzers to quickly spot issues with Harmony patches
+- Includes game assemblies for common use-cases
 
 ## Requirements
 
