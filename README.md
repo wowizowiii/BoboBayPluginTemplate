@@ -28,7 +28,38 @@ This template is designed to work out-of-the-box: that means you can click `Buil
 
 ## Getting Started
 
-### Creating a project
+### Installing the template
+
+Installing the templates is as easy as running the following command:
+
+```
+dotnet new install BoboBayPluginTemplate --nuget-source https://nuget.aethar.net/v3/index.json
+```
+
+This will result in the following being installed:
+
+| Template Name   | Short Name  | Language | Tags                      |
+| --------------- | ----------- | -------- | ------------------------- |
+| Bobo Bay Plugin | bobo-plugin | [C#]     | Bobo Bay/BepInEx 5/Plugin |
+
+You're all set! You can either create a project via [CLI](#creating-a-project-cli) or [IDE](#creating-a-project-ide).
+
+### Creating a project (CLI)
+
+If you feel more comfortable with the CLI, you can create a project with the `dotnet new` command.  
+The only custom template option is `PluginID`, which you can provide as `--PluginID` or `-P`.
+
+```
+dotnet new bobo-plugin --name ExamplePlugin --PluginID com.example.plugin.exampleplugin
+```
+
+Once your project is created, you're good to go!  
+The template takes care of all references for you, so you can focus on what really matters, rather than mess with project configuration.
+
+When ready to publish, don't forget to [add a license](https://choosealicense.com/)! This is very important in the open source community.  
+Additionally, a `.gitignore` file has been included for you to use. Simply move it to the root directory of your project.
+
+### Creating a project (IDE)
 
 Launch your .NET IDE of choice and open the list of available templates.  
 If using Rider, this is done by clicking on "New Solution" near the top middle, or top left if on an EAP build, at the time of writing.  
