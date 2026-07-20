@@ -23,6 +23,6 @@ jobs:
         env:
           NUGET_AUTH_TOKEN: ${{secrets.NUGET_AUTH_TOKEN}}
       - name: Create the package
-        run: dotnet pack -c Release BoboBayPluginTemplate
+        run: dotnet pack --no-build --configuration Release BoboBayPluginTemplate
       - name: Publish the package to AetharNet NuGet Feed
         run: dotnet nuget push BoboBayPluginTemplate/bin/Release/*.nupkg
